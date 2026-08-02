@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة الفيزياء والرياضيات | المنهج العراقي</title>
-    <!-- Google Fonts -->
+    <title>حاسبة الفيزياء والرياضيات الذكية | المنهج العراقي</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f4f7f9;
-            --card-bg: #ffffff;
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --text-main: #2d3748;
-            --text-muted: #718096;
-            --border: #e2e8f0;
+            --bg-color: #0f172a;        /* أزرق ليلي دافئ مريح للعين */
+            --card-bg: #1e293b;        /* كحلي دافئ للكروت */
+            --accent: #38bdf8;         /* سماوي مريح للتركيز */
+            --accent-green: #34d399;   /* أخضر هادئ للنتائج */
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --warning-bg: #451a03;
+            --warning-text: #fbbf24;
         }
 
         * {
@@ -28,18 +29,19 @@
             background-color: var(--bg-color);
             color: var(--text-main);
             padding: 20px 15px;
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
+            line-height: 1.6;
         }
 
         header {
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         header h1 {
-            color: var(--primary);
-            font-size: 1.5rem;
+            color: var(--accent);
+            font-size: 1.6rem;
             margin-bottom: 5px;
         }
 
@@ -48,211 +50,347 @@
             font-size: 0.9rem;
         }
 
-        /* اختيار المرحلة */
-        .stage-selector {
+        /* 1. التبديل بين المواد */
+        .subject-tabs {
             display: flex;
-            gap: 10px;
+            background: #1e293b;
+            padding: 5px;
+            border-radius: 14px;
             margin-bottom: 20px;
+            border: 1px solid var(--border);
         }
 
-        .stage-btn {
+        .tab-btn {
             flex: 1;
             padding: 12px;
-            border: 2px solid var(--border);
-            background: var(--card-bg);
-            border-radius: 12px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
             font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: 10px;
             cursor: pointer;
-            transition: 0.2s;
-            color: var(--text-main);
+            transition: 0.3s;
         }
 
-        .stage-btn.active {
-            border-color: var(--accent);
-            background: #ebf8ff;
-            color: var(--accent);
+        .tab-btn.active {
+            background: var(--accent);
+            color: #0f172a;
         }
 
-        /* منطقة رفع الصورة */
-        .upload-card {
-            background: var(--card-bg);
-            border: 2px dashed var(--accent);
-            border-radius: 16px;
-            padding: 30px 20px;
-            text-align: center;
-            cursor: pointer;
-            margin-bottom: 20px;
-            transition: 0.2s;
-        }
-
-        .upload-card:hover {
-            background: #f0f9ff;
-        }
-
-        .upload-icon {
-            font-size: 40px;
-            margin-bottom: 10px;
-        }
-
-        /* كارت نتيجة الحل */
-        .solution-card {
+        /* 2. قسم الفيزياء (حاسبة القوانين) */
+        .section-card {
             background: var(--card-bg);
             border-radius: 16px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: none; /* يظهر عند الحل */
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
         }
 
-        .solution-header {
-            border-bottom: 1px solid var(--border);
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--accent);
+        }
+
+        .inputs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .btn-calc {
+            width: 100%;
+            background: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.2s;
+        }
+
+        .btn-calc:hover {
+            opacity: 0.9;
+        }
+
+        /* 3. قسم الرياضيات (ماسح الصور) */
+        .upload-box {
+            border: 2px dashed var(--accent);
+            border-radius: 16px;
+            padding: 35px 20px;
+            text-align: center;
+            cursor: pointer;
+            background: rgba(56, 189, 248, 0.03);
+            transition: 0.2s;
+        }
+
+        .upload-box:hover {
+            background: rgba(56, 189, 248, 0.08);
+        }
+
+        /* 4. كارت الحل الشارح (الفيزياء والرياضيات) */
+        .solution-box {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 15px;
+            border-right: 4px solid var(--accent-green);
+        }
+
+        .step-item {
+            margin-bottom: 15px;
             padding-bottom: 10px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border-bottom: 1px dashed var(--border);
         }
 
-        .tag {
-            background: #e2e8f0;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            color: var(--primary);
-        }
-
-        .step {
-            margin-bottom: 15px;
-            padding-right: 10px;
-            border-right: 3px solid var(--accent);
+        .step-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
         }
 
         .step-title {
             font-weight: 700;
+            color: var(--accent-green);
             font-size: 0.95rem;
-            color: var(--primary);
+            margin-bottom: 4px;
         }
 
-        .step-math {
-            background: #f8fafc;
+        .step-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .math-expr {
+            background: #1e293b;
             padding: 8px 12px;
             border-radius: 8px;
             font-family: monospace;
             direction: ltr;
             text-align: left;
             margin-top: 5px;
-            color: #1e293b;
+            color: var(--accent);
             font-weight: bold;
         }
 
-        /* أفكار مضافة: شريط الوصول السريع للقوانين */
-        .quick-laws {
-            margin-top: 25px;
-        }
-
-        .quick-laws h3 {
-            font-size: 1rem;
-            margin-bottom: 10px;
-            color: var(--primary);
-        }
-
-        .laws-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .law-item {
-            background: var(--card-bg);
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
+        .tip-box {
+            background: var(--warning-bg);
+            color: var(--warning-text);
+            padding: 10px 14px;
+            border-radius: 10px;
             font-size: 0.85rem;
-            text-align: center;
+            margin-top: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
+
+        /* التبديل بين الأقسام */
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>مُساعد الفيزياء والرياضيات 📚</h1>
-        <p>حلول منهجية خطوة بخطوة للثالث المتوسط والسادس الإعدادي</p>
+        <h1>المساعد المنهجي الذكي ⚡</h1>
+        <p>حلول الفيزياء بالحاسبة التفاعلية + حل الرياضيات بالصور</p>
     </header>
 
-    <!-- 1. تحديد المرحلة -->
-    <div class="stage-selector">
-        <button class="stage-btn active" onclick="setStage('3rd')">الثالث متوسط</button>
-        <button class="stage-btn" onclick="setStage('6th')">السادس الإعدادي</button>
+    <!-- تبويب المادة -->
+    <div class="subject-tabs">
+        <button class="tab-btn active" onclick="switchSubject('physics')">🔬 الفيزياء (حاسبة القوانين)</button>
+        <button class="tab-btn" onclick="switchSubject('math')">📐 الرياضيات (حل بالصورة)</button>
     </div>
 
-    <!-- 2. منطقة رفع أو التقاط الصورة -->
-    <div class="upload-card" onclick="document.getElementById('fileInput').click()">
-        <div class="upload-icon">📸</div>
-        <p style="font-weight: 500;">اضغط لالتقاط أو رفع صورة المسألة</p>
-        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">تأكد من وضوح الخط والأرقام</p>
-        <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="simulateSolution()">
-    </div>
-
-    <!-- 3. كارت عرض الحل النموذجي (معاينة تجريبية) -->
-    <div class="solution-card" id="solutionCard">
-        <div class="solution-header">
-            <span style="font-weight: 700;">خطوات الحل النموذجي</span>
-            <span class="tag" id="lawTag">فيزياء - قانون أوم</span>
+    <!-- ================= 1. قسم الفيزياء ================= -->
+    <div id="physicsSection" class="section-card">
+        <div class="form-group">
+            <label>اختر المرحلة القانون المطلوبة:</label>
+            <select id="physicsLaw" onchange="updateLawInputs()">
+                <optgroup label="الثالث متوسط">
+                    <option value="ohm">قانون أوم (الفرق والفيزياء الكهربائية)</option>
+                    <option value="current">قانون التيار الكهربائي (I = Q / t)</option>
+                </optgroup>
+                <optgroup label="السادس العلمي">
+                    <option value="capacitor">قانون المتسعة المنفردة (C = Q / ΔV)</option>
+                    <option value="inductance">قانون القوة الدافعة الحركية (e_motional)</option>
+                </optgroup>
+            </select>
         </div>
 
-        <div class="step">
-            <div class="step-title">1. استخراج المعطيات والمجاهيل:</div>
-            <p style="font-size: 0.9rem; margin-top: 3px;">$V = 12\text{V}, R = 4\Omega, I = ?$</p>
+        <div id="dynamicInputs" class="inputs-grid">
+            <!-- سيتم توليد حقول المدخلات هنا تلقائياً -->
         </div>
 
-        <div class="step">
-            <div class="step-title">2. القانون المستخدم:</div>
-            <div class="step-math">I = V / R</div>
-        </div>
+        <button class="btn-calc" onclick="calculatePhysics()">احسب وطبّق الخطوات</button>
 
-        <div class="step">
-            <div class="step-title">3. التعويض والناتج النهائي:</div>
-            <div class="step-math">I = 12 / 4 = 3 Ampere</div>
+        <!-- النتيجة والتفسير -->
+        <div id="physicsSolution" class="solution-box hidden">
+            <!-- يظهر هنا الشرح والخطوات -->
         </div>
     </div>
 
-    <!-- 4. فكرة مضافة: مكتبة القوانين السريعة -->
-    <div class="quick-laws">
-        <h3>💡 ملخص القوانين السريعة</h3>
-        <div class="laws-grid" id="lawsGrid">
-            <div class="law-item"><b>التيار:</b> I = Q / t</div>
-            <div class="law-item"><b>أوم:</b> R = V / I</div>
-            <div class="law-item"><b>القدرة:</b> P = I × V</div>
-            <div class="law-item"><b>الـ emf:</b> E = W / q</div>
+    <!-- ================= 2. قسم الرياضيات ================= -->
+    <div id="mathSection" class="section-card hidden">
+        <div class="upload-box" onclick="document.getElementById('mathImage').click()">
+            <div style="font-size: 40px; margin-bottom: 8px;">📷</div>
+            <p style="font-weight: 700; color: var(--accent);">ارفع أو التقط صورة لمسألة الرياضيات</p>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">تفاضل، تكامل، معادلات، مصفوفات...</p>
+            <input type="file" id="mathImage" accept="image/*" style="display: none;" onchange="solveMathImage()">
+        </div>
+
+        <!-- نتيجة حل الرياضيات المنسق -->
+        <div id="mathSolution" class="solution-box hidden">
+            <div class="step-item">
+                <div class="step-title">1. قراءة المسألة والتصنيف:</div>
+                <div class="step-desc">تم التعرف على مسألة تفاضل (مشتقة ذات رتبة أعلى) - السادس العلمي.</div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-title">2. خطوات الحل السلسة:</div>
+                <div class="step-desc">نشتق الطرفين بالنسبة للمتغير x باستخدام قاعدة السلسلة:</div>
+                <div class="math-expr">f'(x) = 3(2x + 5)^2 . (2)</div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-title">3. تبسيط الناتج النهائي:</div>
+                <div class="math-expr">f'(x) = 6(2x + 5)^2</div>
+            </div>
+
+            <div class="tip-box">
+                💡 <b>ملاحظة وزارية:</b> لا تنسَ كتابة رمزي المشتقة (dy/dx) أو f'(x) بوضوح لضمان عدم خصم الدرجة.
+            </div>
         </div>
     </div>
 
     <script>
-        function setStage(stage) {
-            const btns = document.querySelectorAll('.stage-btn');
-            btns.forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-
-            const lawsGrid = document.getElementById('lawsGrid');
-            if(stage === '6th') {
-                lawsGrid.innerHTML = `
-                    <div class="law-item"><b>المتسعة:</b> C = Q / ΔV</div>
-                    <div class="law-item"><b>الحث:</b> e = -L (ΔI/Δt)</div>
-                    <div class="law-item"><b>الرنين:</b> f_r = 1 / (2π√LC)</div>
-                    <div class="law-item"><b>الطاقة:</b> PE = ½ C (ΔV)²</div>
-                `;
+        // التبديل بين الفيزياء والرياضيات
+        function switchSubject(subject) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            if(subject === 'physics') {
+                tabs[0].classList.add('active');
+                document.getElementById('physicsSection').classList.remove('hidden');
+                document.getElementById('mathSection').classList.add('hidden');
             } else {
-                lawsGrid.innerHTML = `
-                    <div class="law-item"><b>التيار:</b> I = Q / t</div>
-                    <div class="law-item"><b>أوم:</b> R = V / I</div>
-                    <div class="law-item"><b>القدرة:</b> P = I × V</div>
-                    <div class="law-item"><b>الـ emf:</b> E = W / q</div>
+                tabs[1].classList.add('active');
+                document.getElementById('mathSection').classList.remove('hidden');
+                document.getElementById('physicsSection').classList.add('hidden');
+            }
+        }
+
+        // تحديث حقول المدخلات حسب القانون المختار
+        function updateLawInputs() {
+            const law = document.getElementById('physicsLaw').value;
+            const container = document.getElementById('dynamicInputs');
+            
+            if(law === 'ohm') {
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label>فرق الجهد V (فولت):</label>
+                        <input type="number" id="valV" placeholder="مثلاً: 12">
+                    </div>
+                    <div class="form-group">
+                        <label>المقاومة R (أوم):</label>
+                        <input type="number" id="valR" placeholder="مثلاً: 4">
+                    </div>
+                `;
+            } else if(law === 'capacitor') {
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label>الشحنة Q (مايكروكولوم µC):</label>
+                        <input type="number" id="valQ" placeholder="مثلاً: 100">
+                    </div>
+                    <div class="form-group">
+                        <label>فرق الجهد ΔV (فولت):</label>
+                        <input type="number" id="valDv" placeholder="مثلاً: 10">
+                    </div>
                 `;
             }
         }
 
-        // محاكاة لظهور الحل عند رفع صورة
-        function simulateSolution() {
-            document.getElementById('solutionCard').style.display = 'block';
+        // حساب الفيزياء وإنشاء الشرح المنهجي
+        function calculatePhysics() {
+            const law = document.getElementById('physicsLaw').value;
+            const solBox = document.getElementById('physicsSolution');
+            solBox.classList.remove('hidden');
+
+            if(law === 'ohm') {
+                const v = parseFloat(document.getElementById('valV').value) || 0;
+                const r = parseFloat(document.getElementById('valR').value) || 0;
+                const i = r !== 0 ? (v / r).toFixed(2) : 0;
+
+                solBox.innerHTML = `
+                    <div class="step-item">
+                        <div class="step-title">1. كتابة قانون أوم المنهجي:</div>
+                        <div class="step-desc">نستخدم قانون أوم لإيجاد مقدار التيار المسحوب:</div>
+                        <div class="math-expr">I = V / R</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-title">2. التعويض بالأرقام:</div>
+                        <div class="math-expr">I = ${v} / ${r}</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-title">3. الناتج النهائي والوحدة:</div>
+                        <div class="math-expr">I = ${i} A (Ampere)</div>
+                    </div>
+                    <div class="tip-box">
+                        💡 <b>شلون ولماذا؟</b> قمنا بتقسيم الفولتية على المقاومة لأن المقاومة تعيق حركة الشحنات، فكلما زادت المقاومة قل التيار.
+                    </div>
+                `;
+            } else if(law === 'capacitor') {
+                const q = parseFloat(document.getElementById('valQ').value) || 0;
+                const dv = parseFloat(document.getElementById('valDv').value) || 0;
+                const c = dv !== 0 ? (q / dv).toFixed(2) : 0;
+
+                solBox.innerHTML = `
+                    <div class="step-item">
+                        <div class="step-title">1. قانون المتسعة الرئيسي:</div>
+                        <div class="math-expr">C = Q / ΔV</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-title">2. التعويض بالحسابات:</div>
+                        <div class="math-expr">C = ${q} / ${dv}</div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-title">3. سعة المتسعة النهائية:</div>
+                        <div class="math-expr">C = ${c} µF (Microfarad)</div>
+                    </div>
+                `;
+            }
+        }
+
+        // تشغيل البداية
+        updateLawInputs();
+
+        // محاكاة رفع صورة الرياضيات
+        function solveMathImage() {
+            document.getElementById('mathSolution').classList.remove('hidden');
         }
     </script>
 </body>
