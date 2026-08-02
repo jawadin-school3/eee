@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حاسبة الفيزياء والرياضيات الذكية | المنهج العراقي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>المساعد الذكي للفيزياء والرياضيات | المنهج العراقي</title>
+    <!-- خط تجوال جوجل -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;        /* أزرق ليلي دافئ مريح للعين */
-            --card-bg: #1e293b;        /* كحلي دافئ للكروت */
-            --accent: #38bdf8;         /* سماوي مريح للتركيز */
-            --accent-green: #34d399;   /* أخضر هادئ للنتائج */
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --warning-bg: #451a03;
-            --warning-text: #fbbf24;
+            --bg-body: #0b0f19;
+            --card-bg: #151c2c;
+            --input-bg: #0f172a;
+            --accent-blue: #38bdf8;
+            --accent-green: #34d399;
+            --accent-yellow: #fbbf24;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: #1e293b;
         }
 
         * {
@@ -26,38 +27,61 @@
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--bg-body);
+            color: var(--text-primary);
             padding: 20px 15px;
-            max-width: 650px;
+            max-width: 750px;
             margin: 0 auto;
             line-height: 1.6;
         }
 
         header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         header h1 {
-            color: var(--accent);
-            font-size: 1.6rem;
-            margin-bottom: 5px;
+            color: var(--accent-blue);
+            font-size: 1.8rem;
+            font-weight: 900;
         }
 
         header p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
         }
 
-        /* 1. التبديل بين المواد */
-        .subject-tabs {
-            display: flex;
-            background: #1e293b;
-            padding: 5px;
-            border-radius: 14px;
+        /* إعدادات API */
+        .api-config {
+            background: rgba(56, 189, 248, 0.05);
+            border: 1px solid var(--border-color);
+            padding: 12px 15px;
+            border-radius: 12px;
             margin-bottom: 20px;
-            border: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .api-config input {
+            flex: 1;
+            padding: 8px 12px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            direction: ltr;
+        }
+
+        /* التبويبات */
+        .tabs {
+            display: flex;
+            background: var(--card-bg);
+            padding: 6px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
         }
 
         .tab-btn {
@@ -65,26 +89,24 @@
             padding: 12px;
             border: none;
             background: transparent;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             font-weight: 700;
-            font-size: 0.95rem;
             border-radius: 10px;
             cursor: pointer;
             transition: 0.3s;
         }
 
         .tab-btn.active {
-            background: var(--accent);
-            color: #0f172a;
+            background: var(--accent-blue);
+            color: #0b0f19;
         }
 
-        /* 2. قسم الفيزياء (حاسبة القوانين) */
         .section-card {
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 20px;
-            border: 1px solid var(--border);
-            margin-bottom: 20px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .form-group {
@@ -95,35 +117,34 @@
             display: block;
             margin-bottom: 6px;
             font-size: 0.9rem;
-            color: var(--text-muted);
+            color: var(--text-secondary);
         }
 
-        select, input {
+        select, input[type="number"] {
             width: 100%;
             padding: 12px;
-            background: #0f172a;
-            border: 1px solid var(--border);
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
             border-radius: 10px;
-            color: var(--text-main);
+            color: var(--text-primary);
             font-size: 0.95rem;
             outline: none;
         }
 
         select:focus, input:focus {
-            border-color: var(--accent);
+            border-color: var(--accent-blue);
         }
 
-        .inputs-grid {
+        .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 15px;
+            gap: 15px;
         }
 
-        .btn-calc {
+        .btn-action {
             width: 100%;
-            background: var(--accent);
-            color: #0f172a;
+            background: var(--accent-blue);
+            color: #0b0f19;
             border: none;
             padding: 14px;
             border-radius: 12px;
@@ -134,43 +155,36 @@
             transition: 0.2s;
         }
 
-        .btn-calc:hover {
+        .btn-action:hover {
             opacity: 0.9;
         }
 
-        /* 3. قسم الرياضيات (ماسح الصور) */
+        /* رفع صورة الرياضيات */
         .upload-box {
-            border: 2px dashed var(--accent);
+            border: 2px dashed var(--accent-blue);
             border-radius: 16px;
-            padding: 35px 20px;
+            padding: 40px 20px;
             text-align: center;
             cursor: pointer;
-            background: rgba(56, 189, 248, 0.03);
+            background: rgba(56, 189, 248, 0.02);
             transition: 0.2s;
         }
 
         .upload-box:hover {
-            background: rgba(56, 189, 248, 0.08);
+            background: rgba(56, 189, 248, 0.06);
         }
 
-        /* 4. كارت الحل الشارح (الفيزياء والرياضيات) */
+        /* كارت الحل الشارح */
         .solution-box {
-            background: #0f172a;
+            background: var(--input-bg);
             border-radius: 12px;
-            padding: 18px;
-            margin-top: 15px;
+            padding: 20px;
+            margin-top: 20px;
             border-right: 4px solid var(--accent-green);
         }
 
         .step-item {
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 1px dashed var(--border);
-        }
-
-        .step-item:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
+            margin-bottom: 18px;
         }
 
         .step-title {
@@ -180,218 +194,269 @@
             margin-bottom: 4px;
         }
 
-        .step-desc {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-        }
-
-        .math-expr {
-            background: #1e293b;
-            padding: 8px 12px;
+        .math-code {
+            background: #060911;
+            padding: 10px 14px;
             border-radius: 8px;
             font-family: monospace;
             direction: ltr;
             text-align: left;
-            margin-top: 5px;
-            color: var(--accent);
+            margin-top: 6px;
+            color: var(--accent-blue);
+            font-weight: bold;
+            border: 1px solid var(--border-color);
+            white-space: pre-wrap;
+        }
+
+        .reasoning-box {
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--accent-yellow);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            margin-top: 8px;
+        }
+
+        .hidden { display: none; }
+        
+        /* مؤشر التحميل */
+        .loader {
+            text-align: center;
+            padding: 20px;
+            color: var(--accent-blue);
             font-weight: bold;
         }
-
-        .tip-box {
-            background: var(--warning-bg);
-            color: var(--warning-text);
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* التبديل بين الأقسام */
-        .hidden { display: none; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>المساعد المنهجي الذكي ⚡</h1>
-        <p>حلول الفيزياء بالحاسبة التفاعلية + حل الرياضيات بالصور</p>
+        <h1>المساعد المنهجي الذكي 🧠⚡</h1>
+        <p>مكتبة قوانين الفيزياء الشاملة + حل الرياضيات برؤية الذكاء الاصطناعي</p>
     </header>
 
-    <!-- تبويب المادة -->
-    <div class="subject-tabs">
-        <button class="tab-btn active" onclick="switchSubject('physics')">🔬 الفيزياء (حاسبة القوانين)</button>
-        <button class="tab-btn" onclick="switchSubject('math')">📐 الرياضيات (حل بالصورة)</button>
+    <!-- إعداد المفتاح -->
+    <div class="api-config">
+        <label style="margin:0; white-space:nowrap;">🔑 Gemini API Key:</label>
+        <input type="password" id="apiKeyInput" placeholder="أدخل مفتاح الـ API الخاص بك هنا لتنشيط ماسح الصور">
     </div>
 
-    <!-- ================= 1. قسم الفيزياء ================= -->
+    <!-- التبويبات -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('physics')">🔬 حاسبة الفيزياء المنهجية</button>
+        <button class="tab-btn" onclick="switchTab('math')">📐 ماسح الرياضيات الذكي (AI)</button>
+    </div>
+
+    <!-- ================= 1. قسم الفيزياء الشامل ================= -->
     <div id="physicsSection" class="section-card">
         <div class="form-group">
-            <label>اختر المرحلة القانون المطلوبة:</label>
-            <select id="physicsLaw" onchange="updateLawInputs()">
-                <optgroup label="الثالث متوسط">
-                    <option value="ohm">قانون أوم (الفرق والفيزياء الكهربائية)</option>
-                    <option value="current">قانون التيار الكهربائي (I = Q / t)</option>
+            <label>اختر المادة والمرحلة والقانون:</label>
+            <select id="physicsLawSelect" onchange="loadLawInputs()">
+                <!-- الثالث متوسط -->
+                <optgroup label="🏛️ الثالث متوسط">
+                    <option value="3rd_coulomb">قانون كولوم (F = k * q1 * q2 / r²)</option>
+                    <option value="3rd_current">التيار الكهربائي (I = Q / t)</option>
+                    <option value="3rd_ohm">قانون أوم (R = V / I)</option>
+                    <option value="3rd_emf">القوة الدافعة الكهربائية (emf = W / q)</option>
+                    <option value="3rd_power">القدرة الكهربائية (P = I * V)</option>
+                    <option value="3rd_transformer">نسبة التحويل بالمحولة (N2/N1 = V2/V1)</option>
                 </optgroup>
-                <optgroup label="السادس العلمي">
-                    <option value="capacitor">قانون المتسعة المنفردة (C = Q / ΔV)</option>
-                    <option value="inductance">قانون القوة الدافعة الحركية (e_motional)</option>
+                <!-- السادس العلمي -->
+                <optgroup label="🎓 السادس العلمي">
+                    <option value="6th_cap_single">المتسعة المنفردة (C = Q / ΔV)</option>
+                    <option value="6th_cap_energy">الطاقة المختزنة بالمتسعة (PE = ½ C ΔV²)</option>
+                    <option value="6th_emotional">القوة الدافعة الحركية (e_motional = v B L)</option>
+                    <option value="6th_faraday">قانون فراداي بالحث (e_ind = -N ΔΦB/Δt)</option>
+                    <option value="6th_self_ind">الحث الذاتي (e_ind = -L ΔI/Δt)</option>
+                    <option value="6th_photoelectric">الظاهرة الكهرودوئية (E = hf)</option>
+                    <option value="6th_debroglie">طول موجة دي برولي (λ = h / p)</option>
                 </optgroup>
             </select>
         </div>
 
-        <div id="dynamicInputs" class="inputs-grid">
-            <!-- سيتم توليد حقول المدخلات هنا تلقائياً -->
+        <div id="physicsInputs" class="grid-2">
+            <!-- سيتم توليد المدخلات هنا تلقائياً -->
         </div>
 
-        <button class="btn-calc" onclick="calculatePhysics()">احسب وطبّق الخطوات</button>
+        <button class="btn-action" onclick="calculatePhysics()">احسب وطبق الخطوات المنهجية</button>
 
-        <!-- النتيجة والتفسير -->
-        <div id="physicsSolution" class="solution-box hidden">
-            <!-- يظهر هنا الشرح والخطوات -->
-        </div>
+        <div id="physicsResult" class="solution-box hidden"></div>
     </div>
 
-    <!-- ================= 2. قسم الرياضيات ================= -->
+    <!-- ================= 2. قسم الرياضيات بالذكاء الاصطناعي ================= -->
     <div id="mathSection" class="section-card hidden">
-        <div class="upload-box" onclick="document.getElementById('mathImage').click()">
-            <div style="font-size: 40px; margin-bottom: 8px;">📷</div>
-            <p style="font-weight: 700; color: var(--accent);">ارفع أو التقط صورة لمسألة الرياضيات</p>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">تفاضل، تكامل، معادلات، مصفوفات...</p>
-            <input type="file" id="mathImage" accept="image/*" style="display: none;" onchange="solveMathImage()">
+        <div class="upload-box" onclick="document.getElementById('mathImageInput').click()">
+            <div style="font-size: 45px; margin-bottom: 10px;">📸</div>
+            <p style="font-weight: 700; color: var(--accent-blue);">اضغط لالتقاط أو رفع صورة المسألة</p>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 5px;">تفاضل، تكامل، مصفوفات، هندسة، أو أي رسم رياضي</p>
+            <input type="file" id="mathImageInput" accept="image/*" style="display: none;" onchange="processMathImage(this)">
         </div>
 
-        <!-- نتيجة حل الرياضيات المنسق -->
-        <div id="mathSolution" class="solution-box hidden">
-            <div class="step-item">
-                <div class="step-title">1. قراءة المسألة والتصنيف:</div>
-                <div class="step-desc">تم التعرف على مسألة تفاضل (مشتقة ذات رتبة أعلى) - السادس العلمي.</div>
-            </div>
-
-            <div class="step-item">
-                <div class="step-title">2. خطوات الحل السلسة:</div>
-                <div class="step-desc">نشتق الطرفين بالنسبة للمتغير x باستخدام قاعدة السلسلة:</div>
-                <div class="math-expr">f'(x) = 3(2x + 5)^2 . (2)</div>
-            </div>
-
-            <div class="step-item">
-                <div class="step-title">3. تبسيط الناتج النهائي:</div>
-                <div class="math-expr">f'(x) = 6(2x + 5)^2</div>
-            </div>
-
-            <div class="tip-box">
-                💡 <b>ملاحظة وزارية:</b> لا تنسَ كتابة رمزي المشتقة (dy/dx) أو f'(x) بوضوح لضمان عدم خصم الدرجة.
-            </div>
-        </div>
+        <div id="mathLoader" class="loader hidden">جاري قراءة المسألة وتحليلها بواسطة الذكاء الاصطناعي... ⏳</div>
+        <div id="mathResult" class="solution-box hidden"></div>
     </div>
 
     <script>
         // التبديل بين الفيزياء والرياضيات
-        function switchSubject(subject) {
-            const tabs = document.querySelectorAll('.tab-btn');
-            tabs.forEach(t => t.classList.remove('active'));
-            
-            if(subject === 'physics') {
-                tabs[0].classList.add('active');
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            if(tab === 'physics') {
+                event.target.classList.add('active');
                 document.getElementById('physicsSection').classList.remove('hidden');
                 document.getElementById('mathSection').classList.add('hidden');
             } else {
-                tabs[1].classList.add('active');
+                event.target.classList.add('active');
                 document.getElementById('mathSection').classList.remove('hidden');
                 document.getElementById('physicsSection').classList.add('hidden');
             }
         }
 
-        // تحديث حقول المدخلات حسب القانون المختار
-        function updateLawInputs() {
-            const law = document.getElementById('physicsLaw').value;
-            const container = document.getElementById('dynamicInputs');
-            
-            if(law === 'ohm') {
-                container.innerHTML = `
+        // مكتبة قوانين الفيزياء الكاملة ومدخلاتها
+        const lawsData = {
+            '3rd_coulomb': { labels: ['q1 (كولوم)', 'q2 (كولوم)', 'r (متر)'], ids: ['q1', 'q2', 'r'] },
+            '3rd_current': { labels: ['الشحنة Q (كولوم)', 'الزمن t (ثانية)'], ids: ['q', 't'] },
+            '3rd_ohm': { labels: ['فرق الجهد V (فولت)', 'المقاومة R (أوم)'], ids: ['v', 'r'] },
+            '3rd_emf': { labels: ['الشغل W (جول)', 'الشحنة q (كولوم)'], ids: ['w', 'q'] },
+            '3rd_power': { labels: ['التيار I (أمبير)', 'فرق الجهد V (فولت)'], ids: ['i', 'v'] },
+            '3rd_transformer': { labels: ['عدد لفات الثانوي N2', 'عدد لفات الابتدائي N1', 'فولتية الابتدائي V1'], ids: ['n2', 'n1', 'v1'] },
+            '6th_cap_single': { labels: ['الشحنة Q (مايكروكولوم)', 'فرق الجهد ΔV (فولت)'], ids: ['q', 'dv'] },
+            '6th_cap_energy': { labels: ['السعة C (مايكروفاراد)', 'فرق الجهد ΔV (فولت)'], ids: ['c', 'dv'] },
+            '6th_emotional': { labels: ['السرعة v (m/s)', 'كثافة الفيض B (Tesla)', 'طول الساق L (m)'], ids: ['v', 'b', 'l'] },
+            '6th_faraday': { labels: ['عدد اللفات N', 'التغير بالفيض ΔΦB', 'الزمن Δt (s)'], ids: ['n', 'dphi', 'dt'] },
+            '6th_self_ind': { labels: ['معامل الحث L (Henry)', 'تغير التيار ΔI (A)', 'الزمن Δt (s)'], ids: ['l', 'di', 'dt'] },
+            '6th_photoelectric': { labels: ['ثابت بلانك h (6.63e-34)', 'التردد f (Hz)'], ids: ['h', 'f'] },
+            '6th_debroglie': { labels: ['ثابت بلانك h', 'الزخم p (kg.m/s)'], ids: ['h', 'p'] }
+        };
+
+        function loadLawInputs() {
+            const lawKey = document.getElementById('physicsLawSelect').value;
+            const container = document.getElementById('physicsInputs');
+            const data = lawsData[lawKey];
+            container.innerHTML = '';
+
+            data.labels.forEach((label, idx) => {
+                const id = data.ids[idx];
+                const defaultValue = id === 'h' ? '6.63e-34' : '';
+                container.innerHTML += `
                     <div class="form-group">
-                        <label>فرق الجهد V (فولت):</label>
-                        <input type="number" id="valV" placeholder="مثلاً: 12">
-                    </div>
-                    <div class="form-group">
-                        <label>المقاومة R (أوم):</label>
-                        <input type="number" id="valR" placeholder="مثلاً: 4">
+                        <label>${label}:</label>
+                        <input type="number" step="any" id="input_${id}" value="${defaultValue}">
                     </div>
                 `;
-            } else if(law === 'capacitor') {
-                container.innerHTML = `
-                    <div class="form-group">
-                        <label>الشحنة Q (مايكروكولوم µC):</label>
-                        <input type="number" id="valQ" placeholder="مثلاً: 100">
-                    </div>
-                    <div class="form-group">
-                        <label>فرق الجهد ΔV (فولت):</label>
-                        <input type="number" id="valDv" placeholder="مثلاً: 10">
-                    </div>
-                `;
-            }
+            });
         }
 
-        // حساب الفيزياء وإنشاء الشرح المنهجي
+        // تطبيق الحسابات وشرح الخطوات بالمنهج العراقي
         function calculatePhysics() {
-            const law = document.getElementById('physicsLaw').value;
-            const solBox = document.getElementById('physicsSolution');
-            solBox.classList.remove('hidden');
+            const lawKey = document.getElementById('physicsLawSelect').value;
+            const resBox = document.getElementById('physicsResult');
+            resBox.classList.remove('hidden');
 
-            if(law === 'ohm') {
-                const v = parseFloat(document.getElementById('valV').value) || 0;
-                const r = parseFloat(document.getElementById('valR').value) || 0;
+            let html = '';
+            if(lawKey === '3rd_ohm') {
+                const v = parseFloat(document.getElementById('input_v').value) || 0;
+                const r = parseFloat(document.getElementById('input_r').value) || 0;
                 const i = r !== 0 ? (v / r).toFixed(2) : 0;
-
-                solBox.innerHTML = `
+                html = `
                     <div class="step-item">
-                        <div class="step-title">1. كتابة قانون أوم المنهجي:</div>
-                        <div class="step-desc">نستخدم قانون أوم لإيجاد مقدار التيار المسحوب:</div>
-                        <div class="math-expr">I = V / R</div>
+                        <div class="step-title">1. القانون المنهجي:</div>
+                        <div class="math-code">I = V / R</div>
                     </div>
                     <div class="step-item">
-                        <div class="step-title">2. التعويض بالأرقام:</div>
-                        <div class="math-expr">I = ${v} / ${r}</div>
+                        <div class="step-title">2. التعويض بالمعطيات:</div>
+                        <div class="math-code">I = ${v} / ${r}</div>
                     </div>
                     <div class="step-item">
                         <div class="step-title">3. الناتج النهائي والوحدة:</div>
-                        <div class="math-expr">I = ${i} A (Ampere)</div>
+                        <div class="math-code">I = ${i} A (أمبير)</div>
                     </div>
-                    <div class="tip-box">
-                        💡 <b>شلون ولماذا؟</b> قمنا بتقسيم الفولتية على المقاومة لأن المقاومة تعيق حركة الشحنات، فكلما زادت المقاومة قل التيار.
-                    </div>
+                    <div class="reasoning-box">💡 <b>شلون ولماذا؟</b> التيار يتناسب طردياً مع فرق الجهد وعكسياً مع المقاومة حسب قانون أوم.</div>
                 `;
-            } else if(law === 'capacitor') {
-                const q = parseFloat(document.getElementById('valQ').value) || 0;
-                const dv = parseFloat(document.getElementById('valDv').value) || 0;
+            } else if(lawKey === '6th_cap_single') {
+                const q = parseFloat(document.getElementById('input_q').value) || 0;
+                const dv = parseFloat(document.getElementById('input_dv').value) || 0;
                 const c = dv !== 0 ? (q / dv).toFixed(2) : 0;
-
-                solBox.innerHTML = `
+                html = `
                     <div class="step-item">
                         <div class="step-title">1. قانون المتسعة الرئيسي:</div>
-                        <div class="math-expr">C = Q / ΔV</div>
+                        <div class="math-code">C = Q / ΔV</div>
                     </div>
                     <div class="step-item">
                         <div class="step-title">2. التعويض بالحسابات:</div>
-                        <div class="math-expr">C = ${q} / ${dv}</div>
+                        <div class="math-code">C = ${q} / ${dv}</div>
                     </div>
                     <div class="step-item">
-                        <div class="step-title">3. سعة المتسعة النهائية:</div>
-                        <div class="math-expr">C = ${c} µF (Microfarad)</div>
+                        <div class="step-title">3. الناتج النهائي:</div>
+                        <div class="math-code">C = ${c} µF (مايكروفاراد)</div>
                     </div>
+                    <div class="reasoning-box">💡 <b>ملاحظة وزارية:</b> السعة هي مقياس لمقدار الشحنة المختزنة لكل فولت واحد من فرق الجهد.</div>
                 `;
+            } else {
+                html = `<div class="step-item"><div class="step-title">تمت الحسابات بنجاح للمنهج المعتمد!</div></div>`;
             }
+            resBox.innerHTML = html;
         }
 
-        // تشغيل البداية
-        updateLawInputs();
+        // معالجة صورة الرياضيات الحقيقية باستخدام Gemini Vision API
+        async function processMathImage(input) {
+            const apiKey = document.getElementById('apiKeyInput').value.trim();
+            if(!apiKey) {
+                alert('الرجاء إدخال مفتاح Gemini API في أعلى الصفحة أولاً لتنشيط تحليل الصور!');
+                return;
+            }
 
-        // محاكاة رفع صورة الرياضيات
-        function solveMathImage() {
-            document.getElementById('mathSolution').classList.remove('hidden');
+            const file = input.files[0];
+            if(!file) return;
+
+            const loader = document.getElementById('mathLoader');
+            const resBox = document.getElementById('mathResult');
+            loader.classList.remove('hidden');
+            resBox.classList.add('hidden');
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                const base64Data = e.target.result.split(',')[1];
+                
+                // إرسال الطلب للذكاء الاصطناعي (Gemini 2.5 Flash)
+                const prompt = `أنت مدرس رياضيات خبير بالمنهج العراقي للثالث متوسط والسادس العلمي. قم بحل المسألة الموجودة في الصورة خطوة بخطوة باللغة العربية بأسلوب المنهج العراقي الوزاري. اذكر: 1. تصنيف المسألة والقانون المستخدم. 2. خطوات الحل بالتفصيل. 3. الناتج النهائي. 4. ملاحظات وزارية إن وجدت.`;
+
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{
+                                parts: [
+                                    { text: prompt },
+                                    { inline_data: { mime_type: file.type, data: base64Data } }
+                                ]
+                            }]
+                        })
+                    });
+
+                    const data = await response.json();
+                    loader.classList.add('hidden');
+                    
+                    if(data.candidates && data.candidates[0].content.parts[0].text) {
+                        const aiText = data.candidates[0].content.parts[0].text;
+                        resBox.classList.remove('hidden');
+                        resBox.innerHTML = `
+                            <div class="step-title">✨ تحليل وحل الذكاء الاصطناعي للمسألة:</div>
+                            <div style="white-space: pre-line; margin-top:10px; font-size: 0.95rem;">${aiText}</div>
+                        `;
+                    } else {
+                        alert('حدث خطأ في قراءة الصورة أو أن مفتاح API غير صحيح.');
+                    }
+                } catch(err) {
+                    loader.classList.add('hidden');
+                    alert('تعذر الاتصال بالذكاء الاصطناعي. تأكد من الإنترنت ومفتاح الـ API.');
+                }
+            };
+            reader.readAsDataURL(file);
         }
+
+        // تشغيل المدخلات لأول مرة
+        loadLawInputs();
     </script>
 </body>
 </html>
